@@ -1,0 +1,70 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.7'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.geopokrovskiy'
+version = '1.0.0-SNAPSHOT'
+description = 'Webhook collector of notifications from external providers'
+
+java {
+	sourceCompatibility = '21'
+}
+
+repositories {
+	mavenCentral()
+	maven {
+		url "https://nexus.gpokcicd.online/repository/commons/"
+		credentials {
+			username = project.findProperty("nexusUsername") ?: System.getenv("NEXUS_USERNAME")
+			password = project.findProperty("nexusPassword") ?: System.getenv("NEXUS_PASSWORD")
+		}
+		allowInsecureProtocol = false
+	}
+}
+
+dependencies {
+	// BASIC STARTERS
+	implementation 'org.springframework.session:spring-session-core'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// DB
+	implementation "org.postgresql:postgresql:$postgreSqlVersion"
+	implementation "org.flywaydb:flyway-core:$flywayDbVersion"
+
+	//LOGBACK
+	implementation("net.logstash.logback:logstash-logback-encoder:${logbackVersion}")
+
+	//LOMBOK
+	implementation "org.projectlombok:lombok:$lombokVersion"
+	annotationProcessor "org.projectlombok:lombok"
+
+	//MAPSTRUCT
+	implementation "org.mapstruct:mapstruct:$mapStructVersion"
+	annotationProcessor "org.mapstruct:mapstruct-processor:$mapStructVersion"
+
+	// KAFKA
+	implementation 'org.springframework.kafka:spring-kafka'
+
+	//COMMONS
+	implementation "com.geopokrovskiy:commons:${commonsVersion}"
+
+	//TEST
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+	testImplementation "org.testcontainers:postgresql:$testContainersPostgresVersion"
+	testImplementation 'org.testcontainers:junit-jupiter'
+
+	testImplementation 'org.mock-server:mockserver-netty:5.15.0'
+	testImplementation 'org.mock-server:mockserver-client-java:5.15.0'
+	testImplementation 'io.rest-assured:rest-assured'
+	testImplementation 'org.testcontainers:mockserver'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+

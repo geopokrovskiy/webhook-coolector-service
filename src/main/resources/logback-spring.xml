@@ -1,0 +1,46 @@
+<configuration scan="true">
+
+    <!-- Консольный JSON лог -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp />
+                <logLevel />
+                <loggerName />
+                <threadName />
+                <message />
+                <mdc />        <!-- включаем MDC для request info -->
+                <stackTrace />
+            </providers>
+        </encoder>
+    </appender>
+
+    <!--  Файловый лог (с ротацией) -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/webhook_service.txt</file> <!-- путь к текущему файлу -->
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- логи будут архивироваться ежедневно -->
+            <fileNamePattern>logs/webhook_service.%d{yyyy-MM-dd}.txt.gz</fileNamePattern>
+            <maxHistory>30</maxHistory> <!-- храним 30 дней -->
+        </rollingPolicy>
+
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp />
+                <logLevel />
+                <loggerName />
+                <threadName />
+                <message />
+                <mdc />
+                <stackTrace />
+            </providers>
+        </encoder>
+    </appender>
+
+    <!-- Корневой логгер — отправляем логи в оба аппендера -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

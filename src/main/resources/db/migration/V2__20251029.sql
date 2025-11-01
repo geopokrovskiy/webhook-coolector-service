@@ -1,0 +1,1 @@
+ALTER TABLE payment_provider_callbacks ADD column transaction_status varchar(32);

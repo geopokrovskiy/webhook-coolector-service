@@ -1,0 +1,43 @@
+server:
+  port: 8089
+
+spring:
+  application:
+    name: webhook-service
+  config:
+    import: classpath:custom-dev.yml
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+   # url: jdbc:postgresql://localhost:5432/webhook-service
+    url: jdbc:postgresql://postgres:5432/webhook-service
+    username: user
+ #   username: postgres
+    password: password
+  #  password: root
+  kafka:
+    bootstrap-servers: kafka:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  flyway:
+   # url: jdbc:postgresql://localhost:5432/webhook-service
+    url: jdbc:postgresql://postgres:5432/webhook-service
+    locations: classpath:db/migration
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+
+logging:
+  level:
+    org.springframework.web: INFO
+
+
+
+
+
+

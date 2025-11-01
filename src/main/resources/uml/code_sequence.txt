@@ -1,0 +1,30 @@
+actor FakeProvider
+participant WebhookController
+participant WebhookMapper
+participant WebhookSecurity
+participant WebhookService
+participant PaymentProviderCallbackRepository
+participant UnknownCallbackRepository
+participant Kafka
+
+FakeProvider -> WebhookController: POST CreateCallbackDTO /api/v1/webhooks/payment-provider
+WebhookController -> WebhookMapper: Попытка десериализации CreateCallbackDTO
+alt успех
+    WebhookMapper --> WebhookController: Создание payment provider callback
+    WebhookController --> WebhookSecurity: Проверка валидности токена
+    alt токен корректный
+        WebhookSecurity --> WebhookService: создать payment provider callback
+        WebhookService --> PaymentProviderCallbackRepository: savePaymentProviderCallback
+        WebhookService --> Kafka: публикация сообщения для TransactionService
+        WebhookService --> WebhookController: payment provider callback создан
+        WebhookController --> FakeProvider: 201 Created
+    else токен некорректный
+        WebhookSecurity --> WebhookController: токен некорректный
+        WebhookController --> FakeProvider: 401 Unauthorized
+    end
+else ошибка
+    WebhookMapper --> WebhookController: IO Exception
+    WebhookController --> WebhookService: создать unknown callback
+    WebhookService --> UnknownCallbackRepository: saveUnknownCallback
+    WebhookController --> FakeProvider: 400 BadRequest
+end

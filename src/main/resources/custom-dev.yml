@@ -1,0 +1,8 @@
+webhook-security:
+    provider-secret-map:
+      fake-provider: rcRxsbeOcdV2Nz5LGhL7Ix7WcnNmAIkD
+
+
+outbox-processor:
+    kafka-topic: outbox-events
+    delay: 5000
