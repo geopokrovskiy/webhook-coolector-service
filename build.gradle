@@ -22,6 +22,7 @@ repositories {
 		}
 		allowInsecureProtocol = false
 	}
+	maven { url 'https://packages.confluent.io/maven/' }
 }
 
 dependencies {
@@ -47,6 +48,7 @@ dependencies {
 
 	// KAFKA
 	implementation 'org.springframework.kafka:spring-kafka'
+	implementation "io.confluent:kafka-avro-serializer:${kafkaAvroSerializer}"
 
 	//COMMONS
 	implementation "com.geopokrovskiy:commons:${commonsVersion}"

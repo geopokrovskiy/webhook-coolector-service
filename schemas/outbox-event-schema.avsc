@@ -1,0 +1,23 @@
+{
+  "type": "record",
+  "name": "OutboxEvent",
+  "namespace": "com.geopokrovskiy.avro",
+  "fields": [
+    {
+      "name": "uid",
+      "type": "string"
+    },
+    {
+      "name": "provider_transaction_uid",
+      "type": "string"
+    },
+    {
+      "name": "transaction_type",
+      "type": "string"
+    },
+    {
+      "name": "transaction_status",
+      "type": "string"
+    }
+  ]
+}

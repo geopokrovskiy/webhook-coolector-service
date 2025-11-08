@@ -22,9 +22,11 @@ spring:
   #  password: root
   kafka:
     bootstrap-servers: kafka:9092
+    properties:
+      schema.registry.url: http://schema-registry:8081
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
   flyway:
    # url: jdbc:postgresql://localhost:5432/webhook-service
     url: jdbc:postgresql://postgres:5432/webhook-service

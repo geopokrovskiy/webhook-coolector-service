@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: webhook-service
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql:///webhook-service?TC_IMAGE_TAG=17-alpine
+    username: postgres
+    password: root
+  kafka:
+    bootstrap-servers: kafka:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  flyway:
+    enabled: false
+    url: jdbc:postgresql:///webhook-service?TC_IMAGE_TAG=17-alpine
+    locations: classpath:db/test-migration
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+
+logging:
+  level:
+    org.springframework.web: INFO
+
+
+
+
+
+
